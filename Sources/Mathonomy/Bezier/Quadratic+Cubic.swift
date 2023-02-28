@@ -46,6 +46,16 @@ public extension CGPoint {
             y: y.cubic(to: to.y, withControlA: c1.y, andControlB: c2.y, time: time)
         )
     }
+    
+    func cubicSampled(end:Self, withControlA c1:Self, andControlB c2:Self, maxDepth:Int, precision:Int) -> (_ x:Double) -> Self {
+        let search = BezierLinearSearch(start: self, end: end, controlA: c1, controlB: c2, maxDepth: maxDepth, precision: precision)
+        return {
+            (x:Double) -> Self in
+            search.sample(targetX: CGFloat(x))
+        }
+    }
+    
+    
 }
 
 

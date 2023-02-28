@@ -9,17 +9,17 @@ public struct BezierLinearSearch {
     private let controlA:CGPoint
     private let controlB:CGPoint
     private let precisionFraction:Double
-    private let horizontalSearch:HorizontalSearch
+    private let horizontalSearch:HorizontalSearch<CGFloat,CGPoint>
     
     public init(
-        startY: CGFloat,
-        endY: CGFloat,
+        start: CGPoint,
+        end: CGPoint,
         controlA: CGPoint,
         controlB: CGPoint,
         maxDepth: Int,
         precision: Int) {
-            let startPoint = CGPoint(x: 0, y: startY)
-            let endPoint = CGPoint(x: 1, y: endY)
+            let startPoint = start
+            let endPoint = end
             self.start = startPoint
             self.end = endPoint
             self.controlA = controlA
@@ -37,16 +37,16 @@ public struct BezierLinearSearch {
     public func sample(targetX:CGFloat) -> CGPoint {
         let (possiblePreviousMatch, matchingPoint) = horizontalSearch
             .search(
-                lowerBound: (targetX - 0.5).clamped(),
-                upperBound: (targetX + 0.5).clamped()) {
+                lowerBound: start.x,
+                upperBound: end.x) {
                     candidate in
-                    if abs(targetX - candidate) < precisionFraction {
+                    if abs(targetX - candidate.x) < precisionFraction {
                         return .found
                     }
-                    if targetX > candidate {
+                    if targetX > candidate.x {
                         return .under
                     }
-                    if targetX < candidate {
+                    if targetX < candidate.x {
                         return .over
                     }
                     return .found

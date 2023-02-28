@@ -6,12 +6,12 @@ public enum SearchResult {
     case found, over, under
 }
 
-public struct HorizontalSearch {
-    let sourceEquation:(CGFloat) -> CGPoint
+public struct HorizontalSearch<Input:BinaryFloatingPoint,Output> {
+    let sourceEquation:(Input) -> Output
     let maximumDepth:Int
     
     public init(
-        sourceEquation:@escaping (CGFloat) -> CGPoint,
+        sourceEquation:@escaping (Input) -> Output,
         maximumDepth:Int
     ) {
         self.sourceEquation = sourceEquation
@@ -19,17 +19,15 @@ public struct HorizontalSearch {
     }
     
     public func search(
-        lowerBound:CGFloat = 0,
-        upperBound:CGFloat = 1,
+        lowerBound:Input,
+        upperBound:Input,
         currentDepth:Int = 0,
-        previousResult:CGPoint? = nil,
-        resultValidator:@escaping (CGFloat) -> SearchResult
+        previousResult:Output? = nil,
+        resultValidator:@escaping (Output) -> SearchResult
     )
     ->
-    (previousResult:CGPoint?, result:CGPoint) {
+    (previousResult:Output?, result:Output) {
         precondition(upperBound > lowerBound, "Binary search failed upper bound (\(upperBound)) was below lower bound (\(lowerBound)")
-        precondition(upperBound > 0)
-        precondition(lowerBound < 1)
         precondition(currentDepth >= 0)
         precondition(maximumDepth >= currentDepth)
         
@@ -43,7 +41,7 @@ public struct HorizontalSearch {
         }
         
         // Check if the result is good enough, too high or too low
-        switch resultValidator(proposedResult.x) {
+        switch resultValidator(proposedResult) {
             case .found:
                 return (previousResult, proposedResult)
             case .over:
