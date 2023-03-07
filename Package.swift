@@ -9,11 +9,13 @@ let package = Package(
         .library(name: "Mathonomy", targets: ["Mathonomy"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0")
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-numerics", from: "1.0.0")
     ],
     targets: [
         .target(name: "Mathonomy", dependencies: [
-            .product(name: "Algorithms", package: "swift-algorithms")
+            .product(name: "Algorithms", package: "swift-algorithms"),
+            .product(name: "Numerics", package: "swift-numerics")
         ]),
         .testTarget(
             name: "MathonomyTests",

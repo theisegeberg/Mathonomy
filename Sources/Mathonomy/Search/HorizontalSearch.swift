@@ -2,13 +2,14 @@
 import Foundation
 import CoreGraphics
 
-public enum SearchResult {
-    case found, over, under
-}
-
 public struct HorizontalSearch<Input:BinaryFloatingPoint,Output> {
-    let sourceEquation:(Input) -> Output
-    let maximumDepth:Int
+
+    public enum SearchResult {
+        case found, over, under
+    }
+    
+    private let sourceEquation:(Input) -> Output
+    private let maximumDepth:Int
     
     public init(
         sourceEquation:@escaping (Input) -> Output,
@@ -23,7 +24,7 @@ public struct HorizontalSearch<Input:BinaryFloatingPoint,Output> {
         upperBound:Input,
         currentDepth:Int = 0,
         previousResult:Output? = nil,
-        resultValidator:@escaping (Output) -> SearchResult
+        resultValidator:(Output) -> SearchResult
     )
     ->
     (previousResult:Output?, result:Output) {
@@ -40,26 +41,28 @@ public struct HorizontalSearch<Input:BinaryFloatingPoint,Output> {
             return (previousResult, proposedResult)
         }
         
-        // Check if the result is good enough, too high or too low
-        switch resultValidator(proposedResult) {
-            case .found:
-                return (previousResult, proposedResult)
-            case .over:
-                return search(
-                    lowerBound: lowerBound,
-                    upperBound: halfwayBetweenUpperAndLowerBound,
-                    currentDepth: currentDepth + 1,
-                    previousResult: proposedResult,
-                    resultValidator: resultValidator
-                )
-            case .under:
-                return search(
-                    lowerBound: halfwayBetweenUpperAndLowerBound,
-                    upperBound: upperBound,
-                    currentDepth: currentDepth + 1,
-                    previousResult: proposedResult,
-                    resultValidator: resultValidator
-                )
+        return withoutActuallyEscaping(resultValidator) { resultValidator in
+            // Check if the result is good enough, too high or too low
+            switch resultValidator(proposedResult) {
+                case .found:
+                    return (previousResult, proposedResult)
+                case .over:
+                    return search(
+                        lowerBound: lowerBound,
+                        upperBound: halfwayBetweenUpperAndLowerBound,
+                        currentDepth: currentDepth + 1,
+                        previousResult: proposedResult,
+                        resultValidator: resultValidator
+                    )
+                case .under:
+                    return search(
+                        lowerBound: halfwayBetweenUpperAndLowerBound,
+                        upperBound: upperBound,
+                        currentDepth: currentDepth + 1,
+                        previousResult: proposedResult,
+                        resultValidator: resultValidator
+                    )
+            }
         }
     }
     

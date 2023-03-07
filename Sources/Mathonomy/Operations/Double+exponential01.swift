@@ -6,11 +6,11 @@ public extension Double {
         guard exponent != 1 else {
             return self
         }
-        return (pow(exponent, self) - 1) / (exponent - 1)
+        return (Double.pow(exponent, self) - 1) / (exponent - 1)
     }
     
     func exponential01Linear(normalisedExponent:Self) -> Self {
-        exponential01(exponent: pow(10, normalisedExponent))
+        exponential01(exponent: Double.pow(10, normalisedExponent))
     }
 }
 

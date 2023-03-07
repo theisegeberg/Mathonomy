@@ -2,14 +2,22 @@
 import Foundation
 import CoreGraphics
 
+public func map<T: BinaryFloatingPoint>(value: T, sourceMin:T, sourceMax:T, targetMin:T, targetMax:T) -> T {
+    (targetMax - targetMin) * ((value - sourceMin) / (sourceMax - sourceMin)) + targetMin
+}
+
 public func map<T: BinaryFloatingPoint>(value: T, inSourceRange source: ClosedRange<T>, toTargetRange target: ClosedRange<T>) -> T {
     (target.upperBound - target.lowerBound) * ((value - source.lowerBound) / (source.upperBound - source.lowerBound)) + target.lowerBound
 }
 
 public extension BinaryFloatingPoint {
     
+    func mapIn(sourceMin:Self, sourceMax:Self, targetMin:Self, targetMax:Self) -> Self {
+        map(value: self, sourceMin: sourceMin, sourceMax: sourceMax, targetMin: targetMin, targetMax: targetMax)
+    }
+    
     func mapIn(sourceRange source:ClosedRange<Self>, toTargetRange target:ClosedRange<Self>) -> Self {
-        map(value: self, inSourceRange: source, toTargetRange: target)
+        mapIn(sourceMin: source.lowerBound, sourceMax: source.upperBound, targetMin: target.lowerBound, targetMax: target.upperBound)
     }
 
     func mapToNormal(sourceRange source:ClosedRange<Self>) -> Self {
