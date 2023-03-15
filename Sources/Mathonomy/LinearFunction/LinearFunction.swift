@@ -100,9 +100,21 @@ public struct LinearFunction {
         }
     }
     
+    public static func / (lhs: LinearFunction, rhs: LinearFunction) -> LinearFunction {
+        LinearFunction {
+            lhs.evaluate($0) / rhs.evaluate($0)
+        }
+    }
+    
     public static func + (lhs: LinearFunction, rhs: LinearFunction) -> LinearFunction {
         LinearFunction {
             lhs.evaluate($0) + rhs.evaluate($0)
+        }
+    }
+    
+    public static func - (lhs: LinearFunction, rhs: LinearFunction) -> LinearFunction {
+        LinearFunction {
+            lhs.evaluate($0) - rhs.evaluate($0)
         }
     }
     
