@@ -51,7 +51,7 @@ public extension CGPoint {
         let search = BezierLinearSearch(start: self, end: end, controlA: c1, controlB: c2, maxDepth: maxDepth, precision: precision)
         return {
             (x:Double) -> Self in
-            search.sample(targetX: CGFloat(x))
+            search.sample(targetX: x)
         }
     }
     
