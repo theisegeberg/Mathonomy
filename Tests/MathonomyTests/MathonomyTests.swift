@@ -95,6 +95,10 @@ final class MathonomyTests: XCTestCase {
         XCTAssertEqual(d.yIntercept, e.yIntercept, accuracy: 0.000001)
         XCTAssertNotEqual(e.yIntercept, x.yIntercept, accuracy: 0.000001)
         
+        let val3:Double = 3
+        let val3A = pM3M5.slopeIntercept(for: pM2M3, calculatingYforX: val3)
+        let val3B = a.slope * val3 + a.yIntercept
+        XCTAssertEqual(val3A, val3B)
     }
     
     func testClamp() {

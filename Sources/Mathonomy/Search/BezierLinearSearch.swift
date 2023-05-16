@@ -32,9 +32,9 @@ public struct BezierLinearSearch {
                 },
                 maximumDepth: maxDepth)
         }
-   
     
-    public func sample(targetX:CGFloat) -> CGPoint {
+    
+    public func sample(targetX:Double) -> CGPoint {
         let (possiblePreviousMatch, matchingPoint) = horizontalSearch
             .search(
                 lowerBound: start.x,
@@ -54,8 +54,19 @@ public struct BezierLinearSearch {
         guard let previousMatch = possiblePreviousMatch else {
             return matchingPoint
         }
-        let (slope, intercept) = previousMatch.slopeIntercept(for: matchingPoint)
-        return CGPoint(x: targetX, y: slope * targetX + intercept)
+        let y = previousMatch.slopeIntercept(for: matchingPoint, calculatingYforX: targetX)
+        return CGPoint(x: targetX, y: y)
+    }
+    
+    public func cachedSampling0To1(samples:Int) -> (_ x:Double) -> (Double) {
+        let results = stride(from: 0, through: 1, by: 1 / Double(samples)).map { x in
+            Double(sample(targetX: x).y)
+        }
+        return {
+            x in
+            results.value(forNormalisedX: x)
+        }
+
     }
     
     

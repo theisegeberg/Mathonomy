@@ -12,12 +12,16 @@ public struct LinearPlot {
         self.samples = samples
     }
     
-    public func plot<T>(_ f:(Double) -> Double, transform:(_ x:Double,_ y:Double) -> T) -> [T] {
+    public func plot(_ f:(Double) -> Double) -> StrideThrough<Double> {
         stride(
             from: range.lowerBound,
             through: range.upperBound,
             by: range.upperBound / Double(samples)
         )
+    }
+    
+    public func plot<T>(_ f:(Double) -> Double, transform:(_ x:Double,_ y:Double) -> T) -> [T] {
+        plot(f)
         .map {
             transform($0, f($0))
         }

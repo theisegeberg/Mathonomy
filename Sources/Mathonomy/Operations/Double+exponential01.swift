@@ -1,5 +1,6 @@
 
 import Foundation
+import Numerics
 
 public extension Double {
     func exponential01(exponent:Self) -> Self {

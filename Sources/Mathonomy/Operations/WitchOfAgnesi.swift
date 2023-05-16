@@ -1,5 +1,6 @@
 
 import Foundation
+import Numerics
 
 public extension Double {
     static func witchOfAgnesi(height:Double) -> (Double) -> Double {
