@@ -61,7 +61,7 @@ public extension ClosedRange where Bound == Int {
 public extension Array {
     func elements(atStartAndEndOfRange range:ClosedRange<Index>) -> (Element,Element) {
         precondition(range.lowerBound>=self.startIndex)
-        precondition(range.upperBound<=self.endIndex)
+        precondition(range.upperBound<self.endIndex)
         return (self[range.lowerBound],self[range.upperBound])
     }
 }
