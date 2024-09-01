@@ -10,6 +10,7 @@ public func map<T: BinaryFloatingPoint>(value: T, inSourceRange source: ClosedRa
     (target.upperBound - target.lowerBound) * ((value - source.lowerBound) / (source.upperBound - source.lowerBound)) + target.lowerBound
 }
 
+
 public extension BinaryFloatingPoint {
     
     func mapIn(sourceMin:Self, sourceMax:Self, targetMin:Self, targetMax:Self) -> Self {

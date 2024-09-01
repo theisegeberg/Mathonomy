@@ -9,8 +9,8 @@ let package = Package(
         .library(name: "Mathonomy", targets: ["Mathonomy"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
-        .package(url: "https://github.com/apple/swift-numerics", from: "1.0.0")
+        .package(url: "git@github.com:apple/swift-algorithms.git", from: "1.2.0"),
+        .package(url: "git@github.com:apple/swift-numerics.git", from: "1.0.2")
     ],
     targets: [
         .target(name: "Mathonomy", dependencies: [
